@@ -2,9 +2,10 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const app = require("./app");
-const {
+let {
   SERVER: { PORT }
 } = require("./config");
+PORT = process.env.PORT || PORT;
 const trainRoute = require("./train-api");
 require("./connection");
 
