@@ -92,6 +92,10 @@ const superObj = getShortestDistanceBetweenAllPairs();
 // this function O(n) will be extensively used
 function getBestPossibleSeats(numberOfSeats, seatReserved) {
 	console.log(numberOfSeats, seatReserved)
+	const bestFit = {
+		cost: Number.MAX_SAFE_INTEGER,
+		seats: []
+	}
 	const bestCase = {
 		cost: Number.MAX_SAFE_INTEGER,
 		seats: []
@@ -102,20 +106,50 @@ function getBestPossibleSeats(numberOfSeats, seatReserved) {
 			let cost = 0;
 			const seatsArr = [];
 			sortedSeatsArr = sortedSeatsArr.filter(seatObj => seatReserved.indexOf(seatObj.vertex + '') === -1)
-			if(sortedSeatsArr.length < numberOfSeats){
+			if (sortedSeatsArr.length < numberOfSeats) {
 				return false;
 			}
 			for (let j = 0; j < numberOfSeats; j++) {
 				seatsArr.push(sortedSeatsArr[j].vertex);
 				cost += parseInt(sortedSeatsArr[j].distance);
 			}
-			if (bestCase.cost > cost) {
-				bestCase.cost = cost;
-				bestCase.seats = seatsArr;
+			// TODO: find if best fit
+
+			const isBestFit = isBestFit(seatReserved, bestCase.seats)
+			if (isBestFit) {
+				if (bestFit.cost > cost) {
+					bestFit.cost = cost;
+					bestFit.seats = seatsArr;
+				}
+			} else {
+				if (bestCase.cost > cost) {
+					bestCase.cost = cost;
+					bestCase.seats = seatsArr;
+				}
 			}
 		}
 	}
-	return bestCase.seats;
+	if (bestFit.seats.length > 0) {
+		if (bestFit.cost >= bestCase.cost) return bestFit.seats;
+	} else {
+		return bestCase.seats;
+	}
+}
+
+function isBestFit(reservedSeats, allotedSeats) {
+	let isBestFit = false;
+	for (let i = 0; i < 11; i++) {
+		const rowObj = {}
+		for (let j = 0; j < 7; j++) {
+			rowObj[j] = reservedSeats.indexOf(7 * i + j) > -1 || allotedSeats.indexOf(7 * i + j) > -1
+		}
+		isBestFit = true;
+		Object.keys(rowObj).forEach(key => {
+			if (rowObj[key] === false) isBestFit = false;
+		});
+		if (isBestFit) return true
+	}
+	return isBestFit;
 }
 
 module.exports = getBestPossibleSeats;
