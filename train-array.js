@@ -39,17 +39,17 @@ function reserveSeats_bestFit(numSeatsToBook, reservedSeats) {
 	const bestFitSeats = bestPossibleSeats.filter(seatBlock => seatBlock.isBestFit);
 	const remainingSeats = bestPossibleSeats.filter(seatBlock => !seatBlock.isBestFit);
 	if (bestFitSeats.length > 0) {
-		return bestFitSeats[0].seats;
+		return bestFitSeats[0].seats.map(seatIndex => seatIndex + 1);
 	} else if (remainingSeats.length > 0) {
-		return remainingSeats[0].seats.splice(0, numSeatsToBook);
+		return remainingSeats[0].seats.splice(0, numSeatsToBook).map(seatIndex => seatIndex + 1);
 	} else {
 		return [];
 	}
 }
 
-const reservedSeats = [1, 2, 3, 4, 5, 6, 7];
-const returnedSeats = reserveSeats_bestFit(reservedSeats, 1)
-console.log(returnedSeats)
+/* const reservedSeats = [1, 2, 3, 4, 5, 6, 7];
+const returnedSeats = reserveSeats_bestFit(1, reservedSeats)
+console.log(returnedSeats) */
 
 
 module.exports = reserveSeats_bestFit;
