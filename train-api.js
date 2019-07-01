@@ -1,7 +1,8 @@
 const route = require('express').Router();
 const Train = require('./train-model');
 const ticketRoute = require('./ticket-api');
-const getBestPossibleSeats = require('./train-graph');
+// const getBestPossibleSeats = require('./train-graph');
+const getBestPossibleSeats = require('./train-array');
 
 route.use('/tickets', ticketRoute);
 
