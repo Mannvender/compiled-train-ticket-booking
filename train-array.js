@@ -1,7 +1,8 @@
 
 // reservedSeats will contain seat numbers and not seat indices
 function reserveSeats_bestFit(numSeatsToBook, reservedSeats) {
-	reservedSeats = reservedSeats.map(seatIndex => parseInt(seatIndex));
+	reservedSeats = reservedSeats.map(seatIndex => parseInt(seatIndex) + 1);
+	numSeatsToBook = parseInt(numSeatsToBook);
 
 	const bestPossibleSeats = [];
 	for (let row = 0; row < 11; row++) {
@@ -30,26 +31,30 @@ function reserveSeats_bestFit(numSeatsToBook, reservedSeats) {
 		})
 		if (adjacentSeats.length > 0) blocksOfSeats.push(adjacentSeats)
 
-		blocksOfSeats.forEach(adjacentSeats => {
-			if (blocksOfSeats.length === 1 && blocksOfSeats[0].length === numSeatsToBook) bestPossibleSeats.push({ row, seats: adjacentSeats, isBestFit: true })
-			else if (adjacentSeats.length >= numSeatsToBook) bestPossibleSeats.push({ row, seats: adjacentSeats, isBestFit: false })
-		})
+		if (blocksOfSeats.length === 1 && blocksOfSeats[0].length === numSeatsToBook) {
+			bestPossibleSeats.push({ row, seats: adjacentSeats, isBestFit: true })
+		} else {
+			blocksOfSeats.forEach(adjacentSeats => {
+				if (adjacentSeats.length >= numSeatsToBook) {
+					bestPossibleSeats.push({ row, seats: adjacentSeats, isBestFit: false })
+				}
+			})
+		}
 	}
-
 	const bestFitSeats = bestPossibleSeats.filter(seatBlock => seatBlock.isBestFit);
 	const remainingSeats = bestPossibleSeats.filter(seatBlock => !seatBlock.isBestFit);
+	// console.log(bestFitSeats)
 	if (bestFitSeats.length > 0) {
-		return bestFitSeats[0].seats.map(seatIndex => seatIndex + 1);
+		return bestFitSeats[0].seats.map(seatIndex => seatIndex);
 	} else if (remainingSeats.length > 0) {
-		return remainingSeats[0].seats.splice(0, numSeatsToBook).map(seatIndex => seatIndex + 1);
+		return remainingSeats[0].seats.splice(0, numSeatsToBook).map(seatIndex => seatIndex);
 	} else {
 		return [];
 	}
 }
 
-/* const reservedSeats = [1, 2, 3, 4, 5, 6, 7];
+/* const reservedSeats = [0, 1, 2, 3, 4, 7, 8, 9, 10, 11, 12];
 const returnedSeats = reserveSeats_bestFit(1, reservedSeats)
 console.log(returnedSeats) */
-
 
 module.exports = reserveSeats_bestFit;
