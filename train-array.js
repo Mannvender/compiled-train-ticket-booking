@@ -1,7 +1,7 @@
 
 // reservedSeats will contain seat numbers and not seat indices
 function reserveSeats_bestFit(numSeatsToBook, reservedSeats) {
-	reservedSeats = reservedSeats.map(seatIndex => parseInt(seatIndex) + 1);
+	reservedSeats = reservedSeats.map(seatIndex => parseInt(seatIndex));
 
 	const bestPossibleSeats = [];
 	for (let row = 0; row < 11; row++) {
@@ -42,14 +42,14 @@ function reserveSeats_bestFit(numSeatsToBook, reservedSeats) {
 		return bestFitSeats[0].seats;
 	} else if (remainingSeats.length > 0) {
 		return remainingSeats[0].seats.splice(0, numSeatsToBook);
-	}else{
+	} else {
 		return [];
 	}
 }
 
-/* const reservedSeats = [1, 2, 3, 4, 8, 9, 10, 11, 12, 13];
+const reservedSeats = [1, 2, 3, 4, 5, 6, 7];
 const returnedSeats = reserveSeats_bestFit(reservedSeats, 1)
-console.log(returnedSeats) */
+console.log(returnedSeats)
 
 
 module.exports = reserveSeats_bestFit;
